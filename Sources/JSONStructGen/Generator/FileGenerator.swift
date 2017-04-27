@@ -13,6 +13,7 @@ class FileGenerator {
     var inputFilePath: URL
     var outputFilePath: URL
     var middleware: [Middleware]
+    var isClass = false
 
     init(input: URL, output: URL, middleware: [Middleware] = []) {
         if #available(OSX 10.11, *) {
@@ -30,11 +31,12 @@ class FileGenerator {
         let subParsers = rootParser.childParsers
         let allParsers = [rootParser] + subParsers
 
+
         allParsers.forEach { parser in
 
             var code = ""
             code += parser.header
-            code += parser.generate()
+            code += parser.generate(isClass: self.isClass)
             code += middleware.reduce("") { code, middleware in
                 let header = middleware.header
                 return header + code + "\n" + middleware.generate(parser: parser)

@@ -35,11 +35,11 @@ class StructParser {
             self.properties = dictionaryParse(dictionary: json)
         }
     }
-    func generate() -> String {
+    func generate(isClass: Bool) -> String {
 
         let br = "\n"
         var code = ""
-        code += "struct \(structName) {" + br
+        code += "\(isClass ? "class" : "struct") \(structName) {" + br
         properties.forEach { property in
             code += "   var \(property.key): \(property.value.typeName)" + br
         }
